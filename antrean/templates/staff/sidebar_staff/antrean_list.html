@@ -1,0 +1,168 @@
+{% extends 'staff/dashboard_staff.html' %}
+{% load static %}
+{% block content %}
+
+<div class="pagetitle">
+  <h1>Manajemen Antrean</h1>
+  <nav>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a href="{% url 'antrean:dashboard_staff' %}">Dashboard</a>
+      </li>
+      <li class="breadcrumb-item active">Antrean</li>
+    </ol>
+  </nav>
+</div>
+
+<section class="section">
+  <div class="row">
+    <div class="col-lg-12">
+
+      <div class="card">
+        <div class="card-body">
+
+          <!-- ===================== -->
+          <!-- ANTREAN SEDANG PROSES -->
+          <!-- ===================== -->
+          <h5 class="card-title">Antrean Sedang Diproses</h5>
+
+          <table class="table table-bordered">
+            <thead class="table-dark">
+              <tr>
+                <th>No</th>
+                <th>NPM</th>
+                <th>Nama</th>
+                <th>Jurusan</th>
+                <th>Layanan</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for a in antrean_proses %}
+              <tr class="table-warning">
+                <td>{{ a.nomor_antrean }}</td>
+                <td>{{ a.mahasiswa.npm }}</td>
+                <td>{{ a.mahasiswa.nama }}</td>
+                <td>{{ a.mahasiswa.jurusan.jurusan }}</td>
+                <td>{{ a.layanan.layanan }}</td>
+                <td><strong>{{ a.status }}</strong></td>
+              </tr>
+              {% empty %}
+              <tr>
+                <td colspan="6" class="text-center">
+                  Tidak ada antrean yang sedang diproses
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+
+          <!-- ===================== -->
+          <!-- TOMBOL PANGGIL -->
+          <!-- ===================== -->
+          <div class="text-center my-4">
+            <a href="{% url 'antrean:panggil_antrean' %}"
+               class="btn btn-primary btn-lg px-5">
+              PANGGIL ANTREAN BERIKUTNYA
+            </a>
+          </div>
+
+          <hr>
+
+          <!-- ===================== -->
+          <!-- ANTREAN MENUNGGU -->
+          <!-- ===================== -->
+          <h5 class="card-title">Daftar Antrean Menunggu</h5>
+          <p class="text-muted">
+            Diurutkan berdasarkan waktu layanan tercepat (SJF)
+          </p>
+
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>No</th>
+                <th>NPM</th>
+                <th>Nama</th>
+                <th>Jurusan</th>
+                <th>Layanan</th>
+                <th>Status</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for a in antrean_menunggu %}
+              <tr>
+                <td>
+                  {{ antrean_menunggu.start_index|add:forloop.counter0 }}
+                </td>
+                <td>{{ a.mahasiswa.npm }}</td>
+                <td>{{ a.mahasiswa.nama }}</td>
+                <td>{{ a.mahasiswa.jurusan.jurusan }}</td>
+                <td>{{ a.layanan.layanan }}</td>
+                <td>{{ a.status }}</td>
+                <td>
+                  <a href="{% url 'antrean:lewati_antrean' a.id %}"
+                     class="btn btn-sm btn-warning"
+                     onclick="return confirm('Lewati antrean ini?')">
+                    Lewati
+                  </a>
+                </td>
+              </tr>
+              {% empty %}
+              <tr>
+                <td colspan="7" class="text-center">
+                  Tidak ada antrean menunggu
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+
+          <!-- PAGINATION -->
+          <nav class="mt-3">
+            <ul class="pagination justify-content-center">
+
+              {% if antrean_menunggu.has_previous %}
+              <li class="page-item">
+                <a class="page-link"
+                   href="?page={{ antrean_menunggu.previous_page_number }}">
+                  Previous
+                </a>
+              </li>
+              {% else %}
+              <li class="page-item disabled">
+                <span class="page-link">Previous</span>
+              </li>
+              {% endif %}
+
+              <li class="page-item active">
+                <span class="page-link">
+                  Page {{ antrean_menunggu.number }}
+                  of {{ antrean_menunggu.paginator.num_pages }}
+                </span>
+              </li>
+
+              {% if antrean_menunggu.has_next %}
+              <li class="page-item">
+                <a class="page-link"
+                   href="?page={{ antrean_menunggu.next_page_number }}">
+                  Next
+                </a>
+              </li>
+              {% else %}
+              <li class="page-item disabled">
+                <span class="page-link">Next</span>
+              </li>
+              {% endif %}
+
+            </ul>
+          </nav>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+{% endblock %}

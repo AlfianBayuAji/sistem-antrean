@@ -1,0 +1,78 @@
+{% extends 'antrean/dashboard_mahasiswa.html' %}
+{% load static %}
+
+{% block content %}
+
+
+  <div class="pagetitle">
+    <h1>Ambil Antrean</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href="{% url 'antrean:dashboard_mahasiswa' %}">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item active">Ambil Antrean</li>
+      </ol>
+    </nav>
+  </div><!-- End Page Title -->
+
+  {% if alert == "sudah_ada_antrean" %}
+<div class="alert alert-warning">
+  Anda masih memiliki antrean aktif.
+  Selesaikan terlebih dahulu sebelum mengambil layanan lain.
+</div>
+{% endif %}
+
+  <section class="section">
+
+    {% if alert == "200" %}
+      <h4>Berhasil Mengambil Antrean</h4>
+      <div class="card">
+        <div class="card-body">
+          <br>
+          <center>
+            <h5>
+              Antrean Anda Berhasil Diambil!<br>
+              Lihat list antrean untuk melihat nomor antrean Anda.<br>
+              Silakan bersiap untuk datang ke loket BAUK saat giliran Anda sudah dekat.<br>
+              Terima kasih atas perhatian Anda.
+            </h5>
+          </center>
+          <br>
+          <center>
+            <a href="{% url 'antrean:list_antrian' %}" class="btn btn-primary">
+              Lihat Antrean
+            </a>
+          </center>
+        </div>
+      </div>
+
+    {% else %}
+      <h4>Pilih Jenis Layanan</h4>
+      <div class="row align-items-top">
+
+        {% for layanan in layanan_list %}
+          <div class="col-md-6">
+            <div class="card"
+                 data-url="{% url 'antrean:ambil_proses' layanan.id %}"
+                 onclick="location.href=this.dataset.url"
+                 style="cursor: pointer;">
+              <div class="card-body">
+                <h5 class="card-title text-center">{{ layanan.nama }}</h5>
+                <p class="text-center text-muted" style="font-size: 14px;">
+                  Estimasi waktu proses: <b>{{ layanan.prediksi }} menit</b>
+                </p>
+              </div>
+            </div>
+          </div>
+        {% empty %}
+          <p>Tidak ada layanan tersedia.</p>
+        {% endfor %}
+
+      </div>
+    {% endif %}
+  </section>
+
+
+
+{% endblock %}

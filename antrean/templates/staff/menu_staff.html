@@ -1,0 +1,102 @@
+<aside id="sidebar" class="sidebar">
+  {% if request.user.role != 'staff' %}
+  <!-- Sidebar untuk ADMIN -->
+  <ul class="sidebar-nav" id="sidebar-nav">
+
+    <li class="nav-item">
+      <a class="nav-link {% if request.resolver_match.url_name == 'dashboard_staff' %}{% else %}collapsed{% endif %}"
+         href="{% url 'antrean:dashboard_staff' %}">
+        <i class="bi bi-grid"></i>
+        <span>Dashboard</span>
+      </a>
+    </li>
+
+    <li class="nav-item">
+      <a class="nav-link {% if request.resolver_match.url_name == 'antrean_list' %}{% else %}collapsed{% endif %}"
+         href="{% url 'antrean:antrean_list' %}">
+        <i class="bi bi-card-checklist"></i>
+        <span>List Antrean</span>
+      </a>
+    </li>
+
+    <li class="nav-item">
+      <a class="nav-link {% if request.resolver_match.url_name == 'jurusan_list' %}{% else %}collapsed{% endif %}"
+         href="{% url 'antrean:jurusan_list' %}">
+        <i class="bi bi-archive"></i>
+        <span>Jurusan</span>
+      </a>
+    </li>
+
+    <li class="nav-item">
+      <a class="nav-link {% if request.resolver_match.url_name == 'layanan_list' %}{% else %}collapsed{% endif %}"
+         href="{% url 'antrean:layanan_list' %}">
+        <i class="bi bi-receipt"></i>
+        <span>Layanan</span>
+      </a>
+    </li>
+
+    <li class="nav-item">
+      <a class="nav-link {% if request.resolver_match.url_name == 'petugas_list' %}{% else %}collapsed{% endif %}"
+         href="{% url 'antrean:petugas_list' %}">
+        <i class="bi bi-person-square"></i>
+        <span>Petugas</span>
+      </a>
+    </li>
+
+    <li class="nav-item">
+      <a class="nav-link {% if request.resolver_match.url_name == 'mahasiswa_list' %}{% else %}collapsed{% endif %}"
+         href="{% url 'antrean:mahasiswa_list' %}">
+        <i class="bi bi-file-person-fill"></i>
+        <span>Mahasiswa</span>
+      </a>
+    </li>
+
+    <li class="nav-item">
+      <a class="nav-link {% if request.resolver_match.url_name == 'laporan' %}{% else %}collapsed{% endif %}"
+         href="{% url 'antrean:laporan' %}">
+        <i class="bi bi-journal-bookmark-fill"></i>
+        <span>History Antrean</span>
+      </a>
+    </li>
+
+        <li class="nav-item">
+      <a class="nav-link {% if request.resolver_match.url_name == 'retrain_model' %}{% else %}collapsed{% endif %}"
+         href="{% url 'antrean:retrain_model' %}">
+        <i class="bi bi-gear-fill"></i>
+        <span>Retrain Model</span>
+      </a>
+    </li>
+
+  </ul>
+
+  {% else %}
+  <!-- Sidebar untuk STAFF -->
+  <ul class="sidebar-nav" id="sidebar-nav">
+
+    <li class="nav-item">
+      <a class="nav-link {% if request.resolver_match.url_name == 'dashboard_staff' %}{% else %}collapsed{% endif %}"
+         href="{% url 'antrean:dashboard_staff' %}">
+        <i class="bi bi-grid"></i>
+        <span>Dashboard</span>
+      </a>
+    </li>
+
+    <li class="nav-item">
+      <a class="nav-link {% if request.resolver_match.url_name == 'antrean_list' %}{% else %}collapsed{% endif %}"
+         href="{% url 'antrean:antrean_list' %}">
+        <i class="bi bi-card-checklist"></i>
+        <span>List Antrean</span>
+      </a>
+    </li>
+
+    <li class="nav-item">
+      <a class="nav-link {% if request.resolver_match.url_name == 'laporan' %}{% else %}collapsed{% endif %}"
+          href="{% url 'antrean:laporan' %}">
+        <i class="bi bi-journal-bookmark-fill"></i>
+        <span>History Antrean</span>
+      </a>
+    </li>
+
+  </ul>
+  {% endif %}
+</aside><!-- End Sidebar -->

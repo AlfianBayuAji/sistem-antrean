@@ -1,0 +1,122 @@
+/* Reset bawaan browser */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+/* Background halaman */
+body {
+  background-image: url("unwir.jpg"); /* ganti dengan path gambar kamu */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 80vh;
+}
+
+/* Wrapper biar konten lebih rapi */
+.wrapper {
+  width: 100%;
+  height: 100%;
+}
+
+/* Navigasi atas */
+.nav {
+  position: fixed;
+    top: 0;
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    height: 100px;
+    line-height: 100px;
+    background: linear-gradient(rgba(39,39,39, 0.8), transparent);
+    z-index: 100;
+}
+
+.nav-logo p {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.nav-menu ul {
+  display: flex;
+  list-style: none;
+  gap: 20px;
+}
+
+.nav-menu ul li a {
+  text-decoration: none;
+  color: white;
+  font-weight: 500;
+  transition: 0.3s;
+}
+
+.nav-menu ul li a:hover {
+  color: #ffcc00;
+}
+
+/* Tombol menu (hamburger) default disembunyikan di desktop */
+.nav-menu-btn {
+  display: none;
+  font-size: 28px;
+  cursor: pointer;
+  color: white;
+}
+
+/* Container isi utama */
+.container {
+  max-width: 800px;
+  margin: 150px auto 0 auto;
+  background: rgba(255, 255, 255, 0.9); /* putih transparan */
+  padding: 30px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.container h1 {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.container p {
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+/* ======================
+   RESPONSIVE UNTUK HP
+   ====================== */
+@media (max-width: 768px) {
+  .nav-menu {
+    display: none; /* default sembunyi di HP */
+    flex-direction: column;
+    background: rgba(0, 0, 0, 0.9);
+    position: absolute;
+    top: 60px;
+    right: 20px;
+    width: 200px;
+    padding: 15px;
+    border-radius: 10px;
+  }
+
+  .nav-menu.responsive {
+    display: flex; /* muncul saat tombol menu ditekan */
+  }
+
+  .nav-menu ul {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .nav-menu ul li a {
+    color: white;
+    font-size: 16px;
+  }
+
+  .nav-menu-btn {
+    display: block; /* tombol menu (bx-menu) muncul di HP */
+  }
+}

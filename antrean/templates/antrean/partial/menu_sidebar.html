@@ -1,0 +1,34 @@
+<aside id="sidebar" class="sidebar">
+
+  <ul class="sidebar-nav" id="sidebar-nav">
+
+    <!-- Dashboard -->
+    <li class="nav-item">
+      <a class="nav-link {% if request.resolver_match.url_name == 'dashboard_mahasiswa' %}active{% else %}collapsed{% endif %}" 
+         href="{% url 'antrean:dashboard_mahasiswa' %}">
+        <i class="bi bi-grid"></i>
+        <span>Dashboard</span>
+      </a>
+    </li>
+
+    <!-- List Antrean -->
+    <li class="nav-item">
+      <a class="nav-link {% if request.resolver_match.url_name == 'list_antrian' %}active{% else %}collapsed{% endif %}" 
+         href="{% url 'antrean:list_antrian' %}">
+        <i class="bi bi-card-checklist"></i>
+        <span>List Antrean</span>
+      </a>
+    </li>
+
+    <!-- Ambil Antrean -->
+    <li class="nav-item">
+      <a class="nav-link {% if request.resolver_match.url_name == 'ambil_antrian' %}active{% else %}collapsed{% endif %}" 
+         href="{% url 'antrean:ambil_antrian' %}">
+        <i class="bi bi-pen"></i>
+        <span>Ambil Antrean</span>
+      </a>
+    </li>
+
+  </ul>
+
+</aside>

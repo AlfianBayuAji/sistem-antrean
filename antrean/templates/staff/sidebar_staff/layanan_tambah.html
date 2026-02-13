@@ -1,0 +1,74 @@
+{% extends "staff/dashboard_staff.html" %}
+{% load static %}
+{% block content %}
+
+<main id="main" class="main">
+
+  <div class="pagetitle">
+    <h1>Tambah Layanan</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'antrean:dashboard_staff' %}">Dashboard</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'antrean:layanan_list' %}">Layanan</a></li>
+        <li class="breadcrumb-item active">Tambah</li>
+      </ol>
+    </nav>
+  </div><!-- End Page Title -->
+
+  <section class="section">
+    <div class="row">
+      <div class="col-lg-12">
+
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Formulir Tambah Layanan</h5>
+
+            <!-- Notifikasi pesan -->
+            {% if messages %}
+              {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                  {{ message }}
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+              {% endfor %}
+            {% endif %}
+
+            <!-- Formulir Tambah Layanan -->
+            <form method="post" action="{% url 'antrean:layanan_tambah' %}">
+              {% csrf_token %}
+
+              <div class="row mb-3">
+                <label for="layanan" class="col-sm-2 col-form-label">Layanan</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" id="layanan" name="nama_layanan"
+                         placeholder="Nama Jenis Layanan" required>
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <label for="proses" class="col-sm-2 col-form-label">Proses Pelayanan (Menit)</label>
+                <div class="col-sm-10">
+                  <input type="number" class="form-control" id="proses" name="lama_proses"
+                         placeholder="0" min="1" required>
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-10">
+                  <button type="submit" class="btn btn-primary">Submit</button>
+                  <a href="{% url 'antrean:layanan_list' %}" class="btn btn-secondary">Batal</a>
+                </div>
+              </div>
+            </form>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+</main><!-- End #main -->
+
+{% endblock %}

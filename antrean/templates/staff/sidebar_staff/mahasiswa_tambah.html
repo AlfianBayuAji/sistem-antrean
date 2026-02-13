@@ -1,0 +1,71 @@
+{% extends "staff/dashboard_staff.html" %}
+{% block content %}
+
+<div class="pagetitle">
+  <h1>Tambah Mahasiswa</h1>
+  <nav>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{% url 'antrean:dashboard_staff' %}">Dashboard</a></li>
+      <li class="breadcrumb-item"><a href="{% url 'antrean:mahasiswa_list' %}">Mahasiswa</a></li>
+      <li class="breadcrumb-item active">Tambah</li>
+    </ol>
+  </nav>
+</div>
+
+<section class="section">
+  <div class="row">
+    
+    <!-- DIBUAT TENGAH -->
+    <div class="col-lg-8 mx-auto">
+
+      <div class="card">
+        <div class="card-body">
+
+          <h5 class="card-title">Form Tambah Mahasiswa</h5>
+
+          <form method="POST">
+            {% csrf_token %}
+
+            <div class="mb-3">
+              <label class="form-label">Nama</label>
+              <input type="text" name="nama" class="form-control" required>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">NPM</label>
+              <input type="text" name="npm" class="form-control" required>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Jurusan</label>
+              <select name="jurusan" class="form-control" required>
+                <option value="">Pilih Jurusan</option>
+                {% for j in jurusan %}
+                <option value="{{ j.id }}">{{ j.jurusan }}</option>
+                {% endfor %}
+              </select>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Email</label>
+              <input type="email" name="email" class="form-control" required>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Password</label>
+              <input type="password" name="password" class="form-control" required>
+            </div>
+
+            <button class="btn btn-primary">Simpan</button>
+            <a href="{% url 'antrean:mahasiswa_list' %}" class="btn btn-secondary">Batal</a>
+
+          </form>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+{% endblock %}

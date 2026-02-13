@@ -1,0 +1,94 @@
+/* === Global Styles === */
+body {
+    height: 100vh;
+    font-family: Arial, sans-serif;
+    background-color: #f0f4ff; /* biru muda */
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* === Container Utama === */
+.container {
+    width: 100%;
+    max-width: 900px;   /* ubah di sini biar kontainer lebih lebar */
+    margin: auto;
+}
+
+/* === Judul === */
+h2 {
+    color: #010870; /* biru tua */
+    margin-bottom: 10px;
+    font-size: 22px;
+    text-align: center;
+}
+
+h3 {
+    color: #333;
+    font-size: 18px;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+/* === Card Login === */
+.login-card {
+    background: #fff;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0px 4px 12px rgba(0,0,0,0.1);
+    width: 100%;         /* ambil full lebar container */
+    max-width: 900px;    /* biar nggak kepanjangan */
+    margin: auto;
+    text-align: center;
+}
+
+/* === Input Field === */
+.login-card input[type="text"],
+.login-card input[type="password"] {
+    width: 100%;
+    padding: 12px;
+    margin: 12px 0;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 15px;
+}
+
+/* === Tombol Login === */
+.login-card button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 14px;
+    width: 100%;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.login-card button:hover {
+    background-color: #0056b3;
+}
+
+/* === Link Lupa Password === */
+.login-card a {
+    display: block;
+    margin: 10px 0;
+    font-size: 13px;
+    text-decoration: none;
+    color: #007bff;
+}
+
+.login-card a:hover {
+    text-decoration: underline;
+}
+
+.credits {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 14px;
+    color: #555;
+}
+

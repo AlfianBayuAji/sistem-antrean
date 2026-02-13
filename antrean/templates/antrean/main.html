@@ -1,0 +1,116 @@
+{% load static %}
+{% if not user.is_authenticated %}
+  <meta http-equiv="refresh" content="0; url={% url 'antrean:login_mahasiswa' %}">
+{% endif %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>Mahasiswa - Website Antrean Universitas Wiralodra</title>
+  <meta content="Website Antrean Universitas Wiralodra" name="description">
+  <meta content="antrean, perkuliahan, unwir" name="keywords">
+
+  <!-- Favicons -->
+  <link href="{% static 'assets/img/logo.png' %}" rel="icon">
+  <link href="{% static 'assets/img/logo.png' %}" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.gstatic.com" rel="preconnect">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700|Nunito:300,400,600,700|Poppins:400,500,600,700" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+  <link href="{% static 'boxicons/css/boxicons.min.css' %}" rel="stylesheet">
+  <link href="{% static 'quill/quill.snow.css' %}" rel="stylesheet">
+  <link href="{% static 'quill/quill.bubble.css' %}" rel="stylesheet">
+  <link href="{% static 'remixicon/remixicon.css' %}" rel="stylesheet">
+  <link href="{% static 'simple-datatables/style.css' %}" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="{% static 'css/style.css' %}" rel="stylesheet">
+</head>
+
+<body>
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="header fixed-top d-flex align-items-center">
+
+    <div class="d-flex align-items-center justify-content-between">
+      <a href="{% url 'antrean:dashboard_mahasiswa' %}" class="logo d-flex align-items-center">
+        <img src="{% static 'assets/img/logo.png' %}" alt="">
+        <span class="d-none d-lg-block">SIANBA</span>
+      </a>
+      <i class="bi bi-list toggle-sidebar-btn"></i>
+    </div><!-- End Logo -->
+
+    <nav class="header-nav ms-auto">
+      <ul class="d-flex align-items-center">
+        <li class="nav-item dropdown pe-3">
+
+          <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+            <img src="{% static 'assets/img/user.jpeg' %}" alt="Profile" class="rounded-circle">
+            <span class="d-none d-md-block dropdown-toggle ps-2">{{ user.first_name }}</span>
+          </a>
+
+          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+            <li class="dropdown-header">
+              <h6>{{ user.first_name }}</h6>
+              <span>Mahasiswa</span>
+            </li>
+            <li><hr class="dropdown-divider"></li>
+
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="{% url 'logout' %}">
+                <i class="bi bi-box-arrow-right"></i>
+                <span>Keluar</span>
+              </a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </nav><!-- End Icons Navigation -->
+
+  </header><!-- End Header -->
+
+  <!-- ======= Sidebar ======= -->
+  {% include "antrean/menu.html" %}
+
+
+  <!-- ======= Footer ======= -->
+  <footer id="footer" class="footer">
+    <div class="copyright">
+      &copy; Copyright <strong><span>Antrean UNWIR</span></strong>. All Rights Reserved
+    </div>
+    <div class="credits">
+      Dibuat oleh <a href="#">Riana Novianty</a>
+    </div>
+  </footer>
+
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center">
+    <i class="bi bi-arrow-up-short"></i>
+  </a>
+
+  <!-- Vendor JS Files -->
+  <script src="{% static 'apexcharts/apexcharts.min.js' %}"></script>
+  <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'chart.js/chart.umd.js' %}"></script>
+  <script src="{% static 'echarts/echarts.min.js' %}"></script>
+  <script src="{% static 'quill/quill.min.js' %}"></script>
+  <script src="{% static 'simple-datatables/simple-datatables.js' %}"></script>
+  <script src="{% static 'tinymce/tinymce.min.js' %}"></script>
+
+  <!-- Template Main JS File -->
+  <script src="{% static 'js/main.js' %}"></script>
+
+  <script type="text/javascript">
+    setInterval(function() {
+      fetch("{% url 'antrean:panggilan' %}");
+    }, 1000);
+  </script>
+
+</body>
+</html>

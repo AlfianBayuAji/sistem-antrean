@@ -1,0 +1,28 @@
+{% extends "staff/dashboard_staff.html" %}
+{% block content %}
+
+<h3>Edit Petugas</h3>
+
+<form method="POST">
+  {% csrf_token %}
+
+  <div class="mb-3">
+    <label>Nama</label>
+    <input type="text" name="nama" value="{{ petugas.nama }}" class="form-control" required>
+  </div>
+
+  <div class="mb-3">
+    <label>Username</label>
+    <input type="text" name="username" value="{{ petugas.username }}" class="form-control" required>
+  </div>
+
+  <div class="mb-3">
+    <label>Password (kosongkan jika tidak ganti)</label>
+    <input type="password" name="password" class="form-control">
+  </div>
+
+  <button class="btn btn-primary">Update</button>
+  <a href="{% url 'antrean:petugas_list' %}" class="btn btn-secondary">Batal</a>
+</form>
+
+{% endblock %}

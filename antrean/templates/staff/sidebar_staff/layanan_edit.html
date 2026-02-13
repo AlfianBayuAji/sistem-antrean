@@ -1,0 +1,64 @@
+{% extends "staff/dashboard_staff.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="pagetitle">
+  <h1>{% if mode == 'edit' %}Edit{% else %}Tambah{% endif %} Layanan</h1>
+  <nav>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{% url 'antrean:layanan_list' %}">Dashboard</a></li>
+      <li class="breadcrumb-item"><a href="{% url 'antrean:layanan_list' %}">Layanan</a></li>
+      <li class="breadcrumb-item active">{{ mode|title }}</li>
+    </ol>
+  </nav>
+</div>
+
+<section class="section">
+  <div class="row">
+    <div class="col-lg-12">
+
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Formulir {{ mode|title }} Layanan</h5>
+
+          <form method="post">
+            {% csrf_token %}
+
+            <div class="row mb-3">
+              <label class="col-sm-2 col-form-label">Layanan</label>
+              <div class="col-sm-10">
+                <input type="text" name="layanan" class="form-control" 
+                required
+                value="{% if mode == 'edit' %}{{ layanan.layanan }}{% endif %}"
+                placeholder="Nama Jenis Layanan">
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <label class="col-sm-2 col-form-label">Proses Pelayanan (Menit)</label>
+              <div class="col-sm-10">
+                <input type="number" name="proses" class="form-control" 
+                required
+                value="{% if mode == 'edit' %}{{ layanan.proses }}{% endif %}"
+                placeholder="0">
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <div class="col-sm-2"></div>
+              <div class="col-sm-10">
+                <button type="submit" class="btn btn-primary">Submit</button>
+              </div>
+            </div>
+
+          </form>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+{% endblock %}

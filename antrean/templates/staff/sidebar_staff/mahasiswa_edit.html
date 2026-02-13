@@ -1,0 +1,49 @@
+{% extends "staff/dashboard_staff.html" %}
+{% block content %}
+
+<div class="container mt-4">
+
+  <h3>Edit Mahasiswa</h3>
+
+  <form method="POST">
+    {% csrf_token %}
+
+    <div class="mb-3">
+      <label>Nama</label>
+      <input type="text" name="nama" class="form-control" value="{{ mahasiswa.nama }}" required>
+    </div>
+
+    <div class="mb-3">
+      <label>NPM</label>
+      <input type="text" name="npm" class="form-control" value="{{ mahasiswa.npm }}" required>
+    </div>
+
+    <div class="mb-3">
+      <label>Jurusan</label>
+      <select name="jurusan" class="form-control" required>
+        {% for j in jurusan %}
+        <option value="{{ j.id }}" {% if j.id == mahasiswa.jurusan.id %}selected{% endif %}>
+          {{ j.jurusan }}
+        </option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label>Email</label>
+      <input type="email" name="email" class="form-control" value="{{ mahasiswa.email }}" required>
+    </div>
+
+    <div class="mb-3">
+      <label>Password (isi jika ingin mengganti)</label>
+      <input type="password" name="password" class="form-control">
+    </div>
+
+    <button class="btn btn-primary">Simpan</button>
+    <a href="{% url 'antrean:mahasiswa_list' %}" class="btn btn-secondary">Batal</a>
+
+  </form>
+
+</div>
+
+{% endblock %}

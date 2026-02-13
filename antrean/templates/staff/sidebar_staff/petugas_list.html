@@ -1,0 +1,94 @@
+{% extends "staff/dashboard_staff.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="pagetitle">
+  <h1>Petugas</h1>
+  <nav>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a href="{% url 'antrean:dashboard_staff' %}">Dashboard</a>
+      </li>
+      <li class="breadcrumb-item active">Petugas</li>
+    </ol>
+  </nav>
+</div>
+
+<section class="section">
+  <div class="row">
+    <div class="col-lg-12">
+
+      <div class="card">
+        <div class="card-body">
+
+          <div class="row">
+            <div class="col-md-8">
+              <h5 class="card-title">Data Petugas</h5>
+              <p>Berikut data petugas BAUK Universitas Wiralodra Indramayu.</p>
+            </div>
+
+            <div class="col-md-4 text-end">
+              <br>
+              <a href="{% url 'antrean:petugas_create' %}" class="btn btn-primary">
+                Tambah Data
+              </a>
+            </div>
+          </div>
+
+          {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+              {{ message }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+            {% endfor %}
+          {% endif %}
+
+          <div class="table-responsive">
+            <table class="table datatable">
+              <thead>
+                <tr>
+                  <th>No</th>
+                  <th>Nama</th>
+                  <th>Username</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for p in petugas %}
+                <tr>
+                  <td>{{ forloop.counter }}</td>
+                  <td>{{ p.nama }}</td>
+                  <td>{{ p.username }}</td>
+                  <td>
+                    <a href="{% url 'antrean:petugas_edit' p.id %}" class="btn btn-secondary btn-sm">
+                      <i class="bi bi-pencil-square"></i>
+                    </a>
+                    <form action="{% url 'antrean:petugas_delete' p.id %}" method="POST" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit"
+                                class="btn btn-danger btn-sm"
+                                onclick="return confirm('Yakin ingin menghapus data ini?')">
+                            <i class="bi bi-trash-fill"></i>
+                        </button>
+                    </form>
+                  </td>
+                </tr>
+                {% empty %}
+                <tr>
+                  <td colspan="4" class="text-center">Data petugas kosong.</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,75 @@
+{% extends 'antrean/dashboard_mahasiswa.html' %}
+{% load static %}
+
+{% block title %}List Antrean - Antrean UNWIR{% endblock %}
+
+{% block content %}
+<div class="pagetitle">
+  <h1>List Antrean</h1>
+  <nav>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{% url 'antrean:dashboard_mahasiswa' %}">Dashboard</a></li>
+      <li class="breadcrumb-item active">List Antrean</li>
+    </ol>
+  </nav>
+</div>
+
+<section class="section">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-body">
+
+          <div class="row">
+            <div class="col-md-12">
+              <h5 class="card-title">List Antrean</h5>
+              <p>
+                Antrean layanan akan mendahulukan proses layanan yang paling cepat,
+                setelah itu berdasarkan waktu pengambilan antrean tercepat.
+              </p>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table datatable">
+              <thead>
+                <tr>
+                  <th>No Antrean</th>
+                  <th>NPM</th>
+                  <th>Nama</th>
+                  <th>Jurusan</th>
+                  <th>Layanan</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for antrean in antrean %}
+                <tr>
+                  <td>{{ antrean.nomor_antrean }}</td>
+                  <td>{{ antrean.mahasiswa.npm }}</td>
+                  <td>{{ antrean.mahasiswa.nama }}</td>
+                  <td>{{ antrean.mahasiswa.jurusan.jurusan }}</td>
+                  <td>{{ antrean.layanan.layanan }}</td>
+                  <td>
+                    {% if antrean.panggil == 1 %}
+                      Proses ..
+                    {% else %}
+                      {{ antrean.status }}
+                    {% endif %}
+                  </td>
+                </tr>
+                {% empty %}
+                <tr>
+                  <td colspan="6" class="text-center">Belum ada antrean menunggu.</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

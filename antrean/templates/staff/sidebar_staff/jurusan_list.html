@@ -1,0 +1,77 @@
+{% extends "staff/dashboard_staff.html" %}
+{% block content %}
+
+<div class="pagetitle">
+  <h1>Jurusan</h1>
+  <nav>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{% url 'antrean:dashboard_staff' %}">Dashboard</a></li>
+      <li class="breadcrumb-item active">Jurusan</li>
+    </ol>
+  </nav>
+</div>
+
+<section class="section">
+  <div class="card">
+    <div class="card-body">
+
+      <div class="row">
+        <div class="col-md-8">
+          <h5 class="card-title">Data Jurusan</h5>
+        </div>
+        <div class="col-md-4 text-end">
+          <br>
+          <a href="{% url 'antrean:tambah_jurusan' %}" class="btn btn-primary">Tambah Data</a>
+        </div>
+      </div>
+
+      {% if messages %}
+        {% for message in messages %}
+          <div class="alert alert-{{ message.tags }} alert-dismissible fade show">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+          </div>
+        {% endfor %}
+      {% endif %}
+
+      <input type="text" id="searchInput" class="form-control mb-3" placeholder="Cari jurusan..." style="width:200px; float:right">
+
+      <table class="table" id="dataTable">
+        <thead>
+          <tr>
+            <th>No</th>
+            <th>Jurusan</th>
+            <th>Aksi</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for j in jurusan_list %}
+            <tr>
+              <td>{{ forloop.counter }}</td>
+              <td>{{ j.jurusan }}</td>
+              <td>
+                <a href="{% url 'antrean:edit_jurusan' j.id %}" class="btn btn-warning btn-sm">Edit</a>
+                <a href="{% url 'antrean:hapus_jurusan' j.id %}" onclick="return confirm('Hapus data ini?')" class="btn btn-danger btn-sm">Hapus</a>
+              </td>
+            </tr>
+          {% empty %}
+            <tr><td colspan="3" class="text-center">Data kosong</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+</section>
+
+<script>
+document.getElementById("searchInput").addEventListener("keyup", function(){
+  var filter = this.value.toLowerCase();
+  document.querySelectorAll("#dataTable tbody tr").forEach(function(row){
+    let text = row.cells[1].innerText.toLowerCase();
+    row.style.display = text.includes(filter) ? "" : "none";
+  });
+});
+</script>
+
+{% endblock %}

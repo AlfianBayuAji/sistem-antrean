@@ -1,0 +1,128 @@
+{% extends "staff/dashboard_staff.html" %}
+{% block content %}
+
+<div class="pagetitle">
+  <h1>Dashboard</h1>
+  <nav>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{% url 'antrean:dashboard_staff' %}">Home</a></li>
+      <li class="breadcrumb-item active">Dashboard</li>
+    </ol>
+  </nav>
+</div>
+
+<section class="section dashboard">
+  <div class="row">
+
+    <div class="col-lg-12">
+      <div class="row">
+
+        <!-- Card Layanan -->
+        <div class="col-md-4">
+          <div class="card info-card sales-card">
+            <div class="card-body">
+              <h5 class="card-title">Layanan</h5>
+              <div class="d-flex align-items-center">
+                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                  <i class="bi bi-receipt"></i>
+                </div>
+                <div class="ps-3">
+                  <h6>{{ total_layanan }}</h6>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card Mahasiswa -->
+        <div class="col-md-4">
+          <div class="card info-card sales-card">
+            <div class="card-body">
+              <h5 class="card-title">Mahasiswa</h5>
+              <div class="d-flex align-items-center">
+                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                  <i class="bi bi-file-person-fill"></i>
+                </div>
+                <div class="ps-3">
+                  <h6>{{ total_mahasiswa }}</h6>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card Jurusan -->
+        <div class="col-md-4">
+          <div class="card info-card sales-card">
+            <div class="card-body">
+              <h5 class="card-title">Jurusan</h5>
+              <div class="d-flex align-items-center">
+                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                  <i class="bi bi-archive"></i>
+                </div>
+                <div class="ps-3">
+                  <h6>{{ total_jurusan }}</h6>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card Antrian Masuk -->
+        <div class="col-md-4">
+          <div class="card info-card sales-card">
+            <div class="card-body">
+              <h5 class="card-title">Antrean Masuk</h5>
+              <div class="d-flex align-items-center">
+                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                  <i class="bi bi-card-checklist"></i>
+                </div>
+                <div class="ps-3">
+                  <h6>{{ total_antrean }}</h6>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card Terlewat -->
+        <div class="col-md-4">
+          <div class="card info-card customers-card">
+            <div class="card-body">
+              <h5 class="card-title">Antrean Terlewat</h5>
+              <div class="d-flex align-items-center">
+                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                  <i class="bi bi-card-checklist"></i>
+                </div>
+                <div class="ps-3">
+                  <h6>{{ total_terlewat }}</h6>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card Selesai -->
+        <div class="col-md-4">
+          <div class="card info-card revenue-card">
+            <div class="card-body">
+              <h5 class="card-title">Antrean Selesai</h5>
+              <div class="d-flex align-items-center">
+                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                  <i class="bi bi-card-checklist"></i>
+                </div>
+                <div class="ps-3">
+                  <h6>{{ total_selesai }}</h6>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends "staff/dashboard_staff.html" %}
+{% block content %}
+
+  <div class="pagetitle">
+    <h1>Tambah Jurusan</h1>
+  </div>
+
+  <section class="section">
+    <div class="card">
+      <div class="card-body">
+
+        <h5 class="card-title">Form Tambah Jurusan</h5>
+
+        <form method="post">
+          {% csrf_token %}
+          <div class="mb-3">
+            <label>Nama Jurusan</label>
+            <input type="text" name="jurusan" class="form-control" required>
+          </div>
+
+          <button class="btn btn-primary">Simpan</button>
+        </form>
+
+      </div>
+    </div>
+  </section>
+
+{% endblock %}

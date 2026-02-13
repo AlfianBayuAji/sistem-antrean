@@ -1,0 +1,68 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- CSS -->
+    <link href="{% static 'style/style.css' %}" rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+    <title>Antrean Terpadu Universitas Wiralodra</title>
+</head>
+<body>
+ <div class="wrapper">
+    <nav class="nav">
+        <div class="nav-logo">
+            <p>ANTAR</p>
+        </div>
+        <div class="nav-menu" id="navMenu">
+            <ul> 
+                <!-- ini masalah -->
+                <li><a href="{% url 'antrean:lihat_antrian' %}" class="link">Lihat Antrean</a></li>
+{% if user.is_authenticated %}
+                <li><a href="{% url 'antrean:logout' %}" class="link">Logout</a></li>
+{% else %}
+                <li><a href="{% url 'antrean:login_mahasiswa' %}" class="link">Login</a></li>
+{% endif %}
+                <li><a href="{% url 'antrean:register' %}" class="link">Daftar</a></li>
+                <!-- sampe sini -->
+            </ul>
+        </div>
+        <div class="nav-menu-btn">
+            <i class="bx bx-menu" onclick="myMenuFunction()"></i>
+        </div>
+    </nav>
+
+<script>
+   function myMenuFunction() {
+    var i = document.getElementById("navMenu");
+    if(i.className === "nav-menu") {
+        i.className += " responsive";
+    } else {
+        i.className = "nav-menu";
+    }
+   }
+
+   function updateTime() {
+        var now = new Date();
+        var hours = now.getHours().toString().padStart(2, '0');
+        var minutes = now.getMinutes().toString().padStart(2, '0');
+        var seconds = now.getSeconds().toString().padStart(2, '0');
+        document.getElementById('currentTime').textContent = hours + ':' + minutes + ':' + seconds;
+    }
+    // Update time every second
+    setInterval(updateTime, 1000);
+    // Initial call to display current time
+    updateTime();
+</script>
+
+<div class="container">
+            <h1>Sistem Antrean Biro Administrasi Umum dan Keuangan</h1>
+            <p>Selamat datang di Website ANTAR. Website sistem pengambilan antrean online pelayanan BAUK Universitas Wiralodra.</p>
+            <p>Waktu saat ini: <span id="currentTime"></span></p>
+        </div>
+</body>
+</html>

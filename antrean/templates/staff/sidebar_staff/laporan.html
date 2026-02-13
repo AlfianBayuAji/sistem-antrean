@@ -1,0 +1,157 @@
+{% extends "staff/dashboard_staff.html" %}
+{% block content %}
+
+<div class="pagetitle">
+  <h1>History Antrean</h1>
+  <nav>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a href="{% url 'antrean:dashboard_staff' %}">Dashboard</a>
+      </li>
+      <li class="breadcrumb-item active">History Antrean</li>
+    </ol>
+  </nav>
+</div>
+
+<!-- ===================== -->
+<!-- STATISTIK -->
+<!-- ===================== -->
+<section class="section dashboard">
+  <div class="row">
+
+    <div class="col-md-4">
+      <div class="card info-card sales-card">
+        <div class="card-body">
+          <h5 class="card-title">Antrean Masuk</h5>
+          <h6>{{ total_masuk }}</h6>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card info-card customers-card">
+        <div class="card-body">
+          <h5 class="card-title">Antrean Terlewat</h5>
+          <h6>{{ total_terlewat }}</h6>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card info-card revenue-card">
+        <div class="card-body">
+          <h5 class="card-title">Antrean Selesai</h5>
+          <h6>{{ total_selesai }}</h6>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===================== -->
+<!-- TABEL HISTORY -->
+<!-- ===================== -->
+<section class="section">
+  <div class="row">
+    <div class="col-lg-12">
+
+      <div class="card">
+        <div class="card-body">
+
+          <h5 class="card-title">History Antrean</h5>
+          <p class="text-muted">
+            Data history antrean Universitas Wiralodra Indramayu
+          </p>
+
+          <!-- ALERT -->
+          {% if messages %}
+            {% for msg in messages %}
+              <div class="alert alert-{{ msg.tags }} alert-dismissible fade show">
+                {{ msg }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+              </div>
+            {% endfor %}
+          {% endif %}
+
+          <!-- ===================== -->
+          <!-- FILTER + EXPORT -->
+          <!-- ===================== -->
+          <form method="get" class="row g-3 mb-4">
+
+            <div class="col-md-3">
+              <label class="form-label">Dari Tanggal</label>
+              <input type="date" name="start" class="form-control"
+                     value="{{ request.GET.start }}">
+            </div>
+
+            <div class="col-md-3">
+              <label class="form-label">Sampai Tanggal</label>
+              <input type="date" name="end" class="form-control"
+                     value="{{ request.GET.end }}">
+            </div>
+
+            <div class="col-md-6 d-flex align-items-end gap-2">
+              <button type="submit" class="btn btn-primary">
+                Filter
+              </button>
+
+              <a href="{% url 'antrean:export_laporan_csv' %}?start={{ request.GET.start }}&end={{ request.GET.end }}"
+                 class="btn btn-warning">
+                Export Data (CSV)
+              </a>
+            </div>
+
+          </form>
+
+          <!-- ===================== -->
+          <!-- TABEL -->
+          <!-- ===================== -->
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead class="table-dark">
+                <tr>
+                  <th>No</th>
+                  <th>NPM</th>
+                  <th>Nama</th>
+                  <th>Jurusan</th>
+                  <th>Layanan</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+
+                {% for a in antrean %}
+                <tr>
+                  <td>{{ forloop.counter }}</td>
+                  <td>{{ a.mahasiswa.npm }}</td>
+                  <td>{{ a.mahasiswa.nama }}</td>
+                  <td>{{ a.mahasiswa.jurusan.jurusan }}</td>
+                  <td>{{ a.layanan.layanan }}</td>
+                  <td>
+                    {% if a.status == "Dipanggil" %}
+                      Proses ..
+                    {% else %}
+                      {{ a.status }}
+                    {% endif %}
+                  </td>
+                </tr>
+                {% empty %}
+                <tr>
+                  <td colspan="6" class="text-center">
+                    Belum ada data antrean
+                  </td>
+                </tr>
+                {% endfor %}
+
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+{% endblock %}
