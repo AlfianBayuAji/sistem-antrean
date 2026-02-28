@@ -21,7 +21,7 @@
         <div class="nav-menu" id="navMenu">
             <ul> 
                 <!-- ini masalah -->
-                <li><a href="{% url 'antrean:lihat_antrian' %}" class="link">Lihat Antrean</a></li>
+                <li><a href="{% url 'antrean:list_antrean_public' %}" class="link">Lihat Antrean</a></li>
 {% if user.is_authenticated %}
                 <li><a href="{% url 'antrean:logout' %}" class="link">Logout</a></li>
 {% else %}

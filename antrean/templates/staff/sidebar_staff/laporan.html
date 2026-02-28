@@ -13,9 +13,6 @@
   </nav>
 </div>
 
-<!-- ===================== -->
-<!-- STATISTIK -->
-<!-- ===================== -->
 <section class="section dashboard">
   <div class="row">
 
@@ -49,9 +46,6 @@
   </div>
 </section>
 
-<!-- ===================== -->
-<!-- TABEL HISTORY -->
-<!-- ===================== -->
 <section class="section">
   <div class="row">
     <div class="col-lg-12">
@@ -67,16 +61,22 @@
           <!-- ALERT -->
           {% if messages %}
             {% for msg in messages %}
-              <div class="alert alert-{{ msg.tags }} alert-dismissible fade show">
+              <div class="alert 
+                {% if msg.tags == 'error' %}alert-danger
+                {% elif msg.tags == 'success' %}alert-success
+                {% elif msg.tags == 'warning' %}alert-warning
+                {% elif msg.tags == 'info' %}alert-info
+                {% else %}alert-secondary
+                {% endif %}
+                alert-dismissible fade show" role="alert">
+
                 {{ msg }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
               </div>
             {% endfor %}
           {% endif %}
 
-          <!-- ===================== -->
-          <!-- FILTER + EXPORT -->
-          <!-- ===================== -->
+          <!-- FILTER -->
           <form method="get" class="row g-3 mb-4">
 
             <div class="col-md-3">
@@ -104,9 +104,7 @@
 
           </form>
 
-          <!-- ===================== -->
           <!-- TABEL -->
-          <!-- ===================== -->
           <div class="table-responsive">
             <table class="table table-striped">
               <thead class="table-dark">
@@ -123,7 +121,9 @@
 
                 {% for a in antrean %}
                 <tr>
-                  <td>{{ forloop.counter }}</td>
+                  <td>
+                    {{ forloop.counter0|add:antrean.start_index }}
+                  </td>
                   <td>{{ a.mahasiswa.npm }}</td>
                   <td>{{ a.mahasiswa.nama }}</td>
                   <td>{{ a.mahasiswa.jurusan.jurusan }}</td>
@@ -148,10 +148,44 @@
             </table>
           </div>
 
+          <!-- PAGINATION -->
+          {% if antrean.paginator.num_pages > 1 %}
+          <nav class="mt-3">
+            <ul class="pagination justify-content-center">
+
+              {% if antrean.has_previous %}
+                <li class="page-item">
+                  <a class="page-link"
+                     href="?page={{ antrean.previous_page_number }}{% if request.GET.start %}&start={{ request.GET.start }}{% endif %}{% if request.GET.end %}&end={{ request.GET.end }}{% endif %}">
+                     Previous
+                  </a>
+                </li>
+              {% endif %}
+
+              <li class="page-item active">
+                <span class="page-link">
+                  Halaman {{ antrean.number }} dari {{ antrean.paginator.num_pages }}
+                </span>
+              </li>
+
+              {% if antrean.has_next %}
+                <li class="page-item">
+                  <a class="page-link"
+                     href="?page={{ antrean.next_page_number }}{% if request.GET.start %}&start={{ request.GET.start }}{% endif %}{% if request.GET.end %}&end={{ request.GET.end }}{% endif %}">
+                     Next
+                  </a>
+                </li>
+              {% endif %}
+
+            </ul>
+          </nav>
+          {% endif %}
+
         </div>
       </div>
 
     </div>
   </div>
 </section>
+
 {% endblock %}

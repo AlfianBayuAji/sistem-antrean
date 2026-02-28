@@ -52,7 +52,7 @@
                   <tr>
                     <td>{{ forloop.counter }}</td>
                     <td>{{ item.layanan }}</td>
-                    <td>{{ item.prediksi }} Menit</td>
+                    <td>{{ item.prediksi|floatformat:2 }} Menit</td>
                   </tr>
                 {% empty %}
                   <tr>

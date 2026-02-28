@@ -28,6 +28,7 @@ from django.shortcuts import render
 from django.core.mail import send_mail
 from .models import Mahasiswa
 from .utils import generate_reset_token
+from django.utils.timezone import now
 
 from antrean.ml.train_mlr_db import train_mlr_by_date
 from antrean.ml.update_prediksi import update_prediksi
@@ -290,7 +291,7 @@ def ambil_proses(request, id):
 # ==========================
 # 🔹 Lihat daftar antrean (Staff/Admin)
 # ==========================
-@mahasiswa_required
+
 def lihat_antrian(request):
     antrean = (
         Antrean.objects
@@ -543,35 +544,47 @@ def mahasiswa_delete(request, id):
 
 def laporan(request):
 
-    # =========================
-    # BASE QUERY (HISTORI)
-    # =========================
-    antrean_qs = (
-        Antrean.objects
-        .exclude(status="Menunggu")  # histori saja
-        .select_related("mahasiswa", "layanan", "mahasiswa__jurusan")
-    )
-
-    # =========================
-    # FILTER TANGGAL
-    # =========================
     start = request.GET.get("start")
     end = request.GET.get("end")
 
-    if start:
-        antrean_qs = antrean_qs.filter(tgl_daftar__date__gte=start)
+    # ✅ Kalau tanggal kosong
+    if not start or not end:
+        messages.warning(
+            request,
+            "Silakan pilih rentang tanggal terlebih dahulu."
+        )
 
-    if end:
-        antrean_qs = antrean_qs.filter(tgl_daftar__date__lte=end)
+        context = {
+            "antrean": None,
+            "total_masuk": 0,
+            "total_terlewat": 0,
+            "total_selesai": 0,
+        }
+
+        return render(
+            request,
+            "staff/sidebar_staff/laporan.html",
+            context
+        )
 
     # =========================
-    # URUTKAN (TERBARU DI ATAS)
+    # QUERY HISTORI
     # =========================
-    antrean = antrean_qs.order_by("-tgl_daftar")
+    antrean_qs = (
+        Antrean.objects
+        .exclude(status="Menunggu")
+        .select_related("mahasiswa", "layanan", "mahasiswa__jurusan")
+        .filter(tgl_daftar__date__gte=start)
+        .filter(tgl_daftar__date__lte=end)
+    )
 
-    # =========================
-    # SUMMARY (IKUT FILTER)
-    # =========================
+    antrean_list = antrean_qs.order_by("-tgl_daftar")
+
+    # ✅ Pagination 10 data
+    paginator = Paginator(antrean_list, 10)
+    page_number = request.GET.get("page")
+    antrean = paginator.get_page(page_number)
+
     total_masuk = antrean_qs.count()
     total_terlewat = antrean_qs.filter(status="Terlewat").count()
     total_selesai = antrean_qs.filter(status="Selesai").count()
@@ -683,6 +696,8 @@ def panggil_antrean(request):
 
     now = timezone.now()
 
+    aksi_lewati = request.GET.get("lewati")
+
     # ===============================
     # 1. SELESAIKAN ANTREAN PROSES
     # ===============================
@@ -691,11 +706,9 @@ def panggil_antrean(request):
     if current and current.waktu_mulai:
         current.waktu_selesai = now
 
-        # durasi pelayanan (menit)
         durasi = (current.waktu_selesai - current.waktu_mulai).total_seconds() / 60
         current.durasi_pelayanan = round(durasi)
 
-        # simpan untuk evaluasi MLR
         current.prediksi_mlr = current.layanan.prediksi
         current.error_mlr = (
             current.durasi_pelayanan - current.prediksi_mlr
@@ -716,13 +729,35 @@ def panggil_antrean(request):
     )
 
     if next_antrean:
-        next_antrean.status = "Proses"
-        next_antrean.waktu_mulai = now
-        next_antrean.save()
+
+        if aksi_lewati:
+            # 👉 Kalau klik LEWATI
+            next_antrean.status = "Terlewat"
+            next_antrean.save()
+
+        else:
+            # 👉 Normal (Panggil)
+            next_antrean.status = "Proses"
+            next_antrean.waktu_mulai = now
+            next_antrean.save()
 
     return redirect("antrean:antrean_list")
 
+def lewatin_semua(request):
 
+    today = now().date()
+
+    total = Antrean.objects.filter(
+        status="Menunggu",
+        tgl_daftar__date=today
+    ).update(status="Terlewat")
+
+    if total > 0:
+        messages.warning(request, f"{total} antrean hari ini dilewati.")
+    else:
+        messages.info(request, "Tidak ada antrean hari ini.")
+
+    return redirect("antrean:antrean_list")
 
 def panggil_berikutnya(request):
     # Tutup antrean yang sedang berjalan jika ada
@@ -892,8 +927,26 @@ def retrain_model(request):
         start = request.POST.get("start")
         end = request.POST.get("end")
 
+        # ✅ Validasi jika tanggal kosong
+        if not start or not end:
+            messages.warning(
+                request,
+                "Silakan pilih tanggal awal dan tanggal akhir terlebih dahulu."
+            )
+            return redirect("antrean:retrain_model")
+
         try:
             total = train_mlr_by_date(start, end)
+
+            MIN_DATA = 100
+            if total < MIN_DATA:
+                messages.error(
+                    request,
+                    f"Retrain dibatalkan. Minimal {MIN_DATA} data, "
+                    f"namun hanya tersedia {total} data."
+                )
+                return redirect("antrean:retrain_model")
+
             update_prediksi()
             update_all_prediksi()
 
@@ -950,3 +1003,32 @@ def lupa_password(request):
         return render(request, "antrean/lupa_password_done.html")
 
     return render(request, "antrean/lupa_password.html")
+
+def list_antrean_public(request):
+    query = request.GET.get('q')
+
+    # QUERY UTAMA
+    data = (
+        Antrean.objects
+        .select_related('mahasiswa', 'layanan')
+        .filter(status__iexact='menunggu')
+        .order_by('-panggil', 'layanan__prediksi', 'id')
+    )
+
+    # SEARCH
+    if query:
+        data = data.filter(
+            Q(nomor_antrean__icontains=query) |
+            Q(mahasiswa__npm__icontains=query) |
+            Q(mahasiswa__nama__icontains=query)
+        )
+
+    # PAGINATION (10 per halaman)
+    paginator = Paginator(data, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, "antrean/list_antrean_public.html", {
+        "page_obj": page_obj,
+        "query": query
+    })

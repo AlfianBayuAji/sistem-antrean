@@ -22,9 +22,21 @@
         <div class="card-body">
 
           <!-- ===================== -->
+          <!-- MESSAGES -->
+          <!-- ===================== -->
+          {% if messages %}
+            {% for msg in messages %}
+              <div class="alert alert-{{ msg.tags }} alert-dismissible fade show mt-3">
+                {{ msg }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+              </div>
+            {% endfor %}
+          {% endif %}
+
+          <!-- ===================== -->
           <!-- ANTREAN SEDANG PROSES -->
           <!-- ===================== -->
-          <h5 class="card-title">Antrean Sedang Diproses</h5>
+          <h5 class="card-title mt-3">Antrean Sedang Diproses</h5>
 
           <table class="table table-bordered">
             <thead class="table-dark">
@@ -35,6 +47,7 @@
                 <th>Jurusan</th>
                 <th>Layanan</th>
                 <th>Status</th>
+                <th>Aksi</th>
               </tr>
             </thead>
             <tbody>
@@ -46,10 +59,17 @@
                 <td>{{ a.mahasiswa.jurusan.jurusan }}</td>
                 <td>{{ a.layanan.layanan }}</td>
                 <td><strong>{{ a.status }}</strong></td>
+                <td>
+                  <a href="{% url 'antrean:lewati_antrean' a.id %}"
+                     class="btn btn-sm btn-warning"
+                     onclick="return confirm('Lewati antrean ini?')">
+                    Lewati
+                  </a>
+                </td>
               </tr>
               {% empty %}
               <tr>
-                <td colspan="6" class="text-center">
+                <td colspan="7" class="text-center">
                   Tidak ada antrean yang sedang diproses
                 </td>
               </tr>
@@ -76,6 +96,17 @@
           <p class="text-muted">
             Diurutkan berdasarkan waktu layanan tercepat (SJF)
           </p>
+
+          <!-- ===================== -->
+          <!-- TOMBOL LEWATIN SEMUA -->
+          <!-- ===================== -->
+          <div class="mb-3 text-end">
+            <a href="{% url 'antrean:lewatin_semua' %}"
+               class="btn btn-danger"
+               onclick="return confirm('Yakin ingin melewati semua antrean?')">
+              Lewatin Semua
+            </a>
+          </div>
 
           <table class="table table-striped">
             <thead>

@@ -12,7 +12,7 @@ def update_prediksi():
     for lay in layanan_all:
         try:
             pred = predict_waktu(lay.id)
-            lay.prediksi = round(pred, 1) if pred is not None else None
+            lay.prediksi = round(pred, 2) if pred is not None else None
             print(f"✔ {lay.layanan}: {lay.prediksi} menit")
         except Exception as e:
             print(f"❌ Error pada {lay.layanan}: {e}")

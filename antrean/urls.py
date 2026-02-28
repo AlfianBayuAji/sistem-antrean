@@ -75,5 +75,6 @@ urlpatterns = [
 
     path("lupa-password/", views.lupa_password, name="lupa_password"),
     path("reset-password/<str:token>/", views.reset_password, name="reset_password"),
-
+    path('antrean-public/', views.list_antrean_public, name='list_antrean_public'),
+    path("lewatin-semua/", views.lewatin_semua, name="lewatin_semua"),
 ]
